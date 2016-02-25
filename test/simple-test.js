@@ -8,7 +8,7 @@ let rules = [
   },
   {
     "name": "operator",
-    "pattern": "[+-\\\\*]",
+    "pattern": /[+\-\*]/,
     "ignorable": false // default to false
   },
   {
@@ -26,7 +26,7 @@ let Tokenizer = require("../").Tokenizer, util = require("util");
 
 let tokenizer = new Tokenizer(rules);
 
-let lex = tokenizer("1+a*b-2");
+let lex = tokenizer("123+456-abc");
 
 while (true) {
   let obj = lex.next();
