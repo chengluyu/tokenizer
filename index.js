@@ -6,9 +6,15 @@
 
   function Tokenizer(rules) {
 
-    let patternLiteral = rules.map(x => `(${x})`).join('|');
+    if (!util.isArray(rules)) throw new Error("invaild argument");
 
-    function* tokenizer(text) {
+    let patternLiteral = rules.map(x => {
+      x = x.pattern;
+      if (util.isRegExp(x)) return `(${x.source})`;
+      return `(${x})`
+    }).join('|');
+
+    return function* tokenizer(text) {
       let pattern = new RegExp(patternLiteral, "gm");
 
       while (true) {
@@ -31,13 +37,11 @@
           }
         }
 
-        if (value === undefined) throw new Error("internal error");
+        if (token === undefined) throw new Error("internal error");
 
         yield token;
       }
-    }
-
-    return text => tokenizer(text).next;
+    };
 
   }
 
