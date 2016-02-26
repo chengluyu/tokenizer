@@ -17,7 +17,7 @@
     return function* tokenizer(text) {
       let pattern = new RegExp(patternLiteral, "gm"); console.log(util.inspect(patternLiteral));
 
-      while (true) {
+      parse: while (true) {
         let index = pattern.lastIndex;
 
         if (index === text.length) return { type: "eof", index };
@@ -29,12 +29,14 @@
         for (let k = 0; k < rules.length; k++) {
           let value = result[1 + k];
           if (typeof value === "string") {
-            
+
             if (index + value.length !== pattern.lastIndex)
               return { type: "error", index };
 
+            if (rules[k].ignorable) continue parse;
+
             var token = {
-              name: rules[k].name,
+              type: rules[k].name,
               value,
               index
             };

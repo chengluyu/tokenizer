@@ -26,7 +26,7 @@ let Tokenizer = require("../").Tokenizer, util = require("util");
 
 let tokenizer = new Tokenizer(rules);
 
-let lex = tokenizer("123+456-abc");
+let lex = tokenizer("123 + 456 - abc");
 
 while (true) {
   let obj = lex.next();
